@@ -96,5 +96,33 @@ public class IplAnalyserTest {
             e.printStackTrace();
         }
     }
+    @Test
+    public void givenIplData_ShouldReturnBestStrikingRate() {
+        try {
+            IplAnalyser iplAnalyser = new IplAnalyser();
+            iplAnalyser.loadIplRunData(IPL_CSV_FILE_PATH);
+            String sortedData = iplAnalyser.bestStrikingRateWithFourAndSix();
+            IPLMostRunCSV[] iplCSV = new Gson().fromJson(sortedData, IPLMostRunCSV[].class);
+            String playerWithMaximum4s = iplCSV[0].player;
+            Assert.assertEquals((Double)333.33,(Double)iplCSV[0].strikeRate);
+            System.out.println(playerWithMaximum4s);
+        } catch (IplAnalyserException e) {
+            e.printStackTrace();
+        }
+    }
+    @Test
+    public void givenIplData_ShouldReturn() {
+        try {
+            IplAnalyser iplAnalyser = new IplAnalyser();
+            iplAnalyser.loadIplRunData(IPL_CSV_FILE_PATH);
+            String sortedData = iplAnalyser.bestStrikingRateWithFourAndSix();
+            IPLMostRunCSV[] iplCSV = new Gson().fromJson(sortedData, IPLMostRunCSV[].class);
+            String playerWithMaximum4s = iplCSV[1].player;
+            Assert.assertEquals((Double)204.81,(Double)iplCSV[1].strikeRate);
+            System.out.println(playerWithMaximum4s);
+        } catch (IplAnalyserException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
