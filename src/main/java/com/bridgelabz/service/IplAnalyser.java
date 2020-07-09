@@ -57,4 +57,5 @@ public class IplAnalyser {
         strikingRate = strikingRate.stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());
         return strikingRate;
     }
+
 }
