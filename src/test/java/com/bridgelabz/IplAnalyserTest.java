@@ -3,6 +3,7 @@ package com.bridgelabz;
 import com.bridgelabz.exception.IplAnalyserException;
 import com.bridgelabz.model.IPLMostRunCSV;
 import com.bridgelabz.service.IplAnalyser;
+import com.google.gson.Gson;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -48,8 +49,9 @@ public class IplAnalyserTest {
         try {
             IplAnalyser iplAnalyser = new IplAnalyser();
             iplAnalyser.loadIplRunData(IPL_CSV_FILE_PATH);
-            List sortedData = iplAnalyser.getTopStrikingRate();
-            Assert.assertEquals(333.33, sortedData.get(0));
+            String sortedData = iplAnalyser.getTopStrikingRate();
+            IPLMostRunCSV[] iplCSV = new Gson().fromJson(sortedData, IPLMostRunCSV[].class);
+            Assert.assertEquals((Double)333.33, (Double)iplCSV[0].strikeRate);
         } catch (IplAnalyserException e) {
             e.printStackTrace();
         }
@@ -59,8 +61,37 @@ public class IplAnalyserTest {
         try {
             IplAnalyser iplAnalyser = new IplAnalyser();
             iplAnalyser.loadIplRunData(IPL_CSV_FILE_PATH);
-            List sortedData = iplAnalyser.getTopStrikingRate();
-            Assert.assertEquals(204.81, sortedData.get(1));
+            String sortedData = iplAnalyser.getTopStrikingRate();
+            IPLMostRunCSV[] iplCSV = new Gson().fromJson(sortedData, IPLMostRunCSV[].class);
+            Assert.assertEquals((Double)204.81,(Double) iplCSV[1].strikeRate);
+        } catch (IplAnalyserException e) {
+            e.printStackTrace();
+        }
+    }
+    @Test
+    public void givenIplData_ShouldReturnPlayerWithMaximum6s() {
+        try {
+            IplAnalyser iplAnalyser = new IplAnalyser();
+            iplAnalyser.loadIplRunData(IPL_CSV_FILE_PATH);
+            String sortedData = iplAnalyser.getMaximum6s();
+            IPLMostRunCSV[] iplCSV = new Gson().fromJson(sortedData, IPLMostRunCSV[].class);
+            String playerWithMaximum6s = iplCSV[0].player;
+            Assert.assertEquals(52,iplCSV[0].sixS);
+            System.out.println(playerWithMaximum6s);
+        } catch (IplAnalyserException e) {
+            e.printStackTrace();
+        }
+    }
+    @Test
+    public void givenIplData_ShouldReturnPlayerWithMaximum4s() {
+        try {
+            IplAnalyser iplAnalyser = new IplAnalyser();
+            iplAnalyser.loadIplRunData(IPL_CSV_FILE_PATH);
+            String sortedData = iplAnalyser.getMaximum4s();
+            IPLMostRunCSV[] iplCSV = new Gson().fromJson(sortedData, IPLMostRunCSV[].class);
+            String playerWithMaximum4s = iplCSV[0].player;
+            Assert.assertEquals(64,iplCSV[0].fourS);
+            System.out.println(playerWithMaximum4s);
         } catch (IplAnalyserException e) {
             e.printStackTrace();
         }
