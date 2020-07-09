@@ -17,23 +17,25 @@ import java.util.stream.Collectors;
 
 public class IplAnalyser {
     List<IPLMostRunCSV> iplCSVList = null;
+
     public int loadIplRunData(String csvFilePath) throws IplAnalyserException {
         try {
             Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));
             ICSVBuilder csvBuilder = CSVBuilderFactory.createCSVBuilder();
-            iplCSVList = csvBuilder.getCSVFileList(reader,IPLMostRunCSV.class);
+            iplCSVList = csvBuilder.getCSVFileList(reader, IPLMostRunCSV.class);
             return iplCSVList.size();
         } catch (IOException e) {
             throw new IplAnalyserException(e.getMessage(),
                     IplAnalyserException.ExceptionType.IPL_FILE_PROBLEM);
-        }catch (IllegalStateException e){
+        } catch (IllegalStateException e) {
             throw new IplAnalyserException(e.getMessage(),
                     IplAnalyserException.ExceptionType.UNABLE_TO_PARSE);
-        }catch (CSVBuilderException e) {
+        } catch (CSVBuilderException e) {
             throw new IplAnalyserException(e.getMessage(), e.type.name());
         }
     }
-    public List<Double> getTopBattingAverage(){
+
+    public List<Double> getTopBattingAverage() {
         List<Double> battingAverages = new ArrayList<>();
         double battingAverage = 0;
         for (IPLMostRunCSV iplMostRunCSV : iplCSVList) {
@@ -46,5 +48,13 @@ public class IplAnalyser {
         }
         battingAverages = battingAverages.stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());
         return battingAverages;
+    }
+    public List<Double> getTopStrikingRate() {
+        List<Double> strikingRate = new ArrayList<>();
+        for (int i = 0; i < iplCSVList.size(); i++) {
+            strikingRate.add(iplCSVList.get(i).strikeRate);
+        }
+        strikingRate = strikingRate.stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());
+        return strikingRate;
     }
 }
