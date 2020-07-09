@@ -2,6 +2,7 @@ package com.bridgelabz.service;
 
 import com.bridgelabz.exception.IplAnalyserException;
 import com.bridgelabz.model.IPLMostRunCSV;
+import com.google.gson.Gson;
 import csvbuilder.CSVBuilderException;
 import csvbuilder.CSVBuilderFactory;
 import csvbuilder.ICSVBuilder;
@@ -34,7 +35,6 @@ public class IplAnalyser {
             throw new IplAnalyserException(e.getMessage(), e.type.name());
         }
     }
-
     public List<Double> getTopBattingAverage() {
         List<Double> battingAverages = new ArrayList<>();
         double battingAverage = 0;
@@ -49,13 +49,19 @@ public class IplAnalyser {
         battingAverages = battingAverages.stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());
         return battingAverages;
     }
-    public List<Double> getTopStrikingRate() {
-        List<Double> strikingRate = new ArrayList<>();
-        for (int i = 0; i < iplCSVList.size(); i++) {
-            strikingRate.add(iplCSVList.get(i).strikeRate);
-        }
-        strikingRate = strikingRate.stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());
-        return strikingRate;
+    public String getTopStrikingRate() {
+        iplCSVList.sort(((iplData1, iplData2) -> Double.compare(iplData2.strikeRate,iplData1.strikeRate)));
+        String sortedIpldData = new Gson().toJson(iplCSVList);
+        return sortedIpldData;
     }
-
+    public String getMaximum6s() {
+        iplCSVList.sort(((iplData1, iplData2) -> iplData2.sixS-iplData1.sixS));
+        String sortedIplData = new Gson().toJson(iplCSVList);
+        return sortedIplData;
+    }
+    public String getMaximum4s() {
+        iplCSVList.sort(((iplData1, iplData2) -> iplData2.fourS - iplData1.fourS));
+        String sortedIplData = new Gson().toJson(iplCSVList);
+        return sortedIplData;
+    }
 }
