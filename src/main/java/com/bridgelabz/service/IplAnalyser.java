@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class IplAnalyser {
     List<IPLMostRunCSV> iplCSVList = null;
@@ -63,5 +64,13 @@ public class IplAnalyser {
         iplCSVList.sort(((iplData1, iplData2) -> iplData2.fourS - iplData1.fourS));
         String sortedIplData = new Gson().toJson(iplCSVList);
         return sortedIplData;
+    }
+    public String bestStrikingRateWithFourAndSix() throws IplAnalyserException {
+//        IntStream.rangeClosed(0,iplCSVList.size()).filter(i -> iplCSVList.get(i).fourS == 0 || iplCSVList.get(i).sixS == 0).forEach(i -> iplCSVList.remove(i));
+        for(int i=0;i<iplCSVList.size();i++){
+            if(iplCSVList.get(i).fourS == 0 || iplCSVList.get(i).sixS == 0)
+                iplCSVList.remove(i);
+        }
+        return getTopStrikingRate();
     }
 }
